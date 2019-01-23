@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>顔認識</title>
+    <style>
+        /* video 要素の上に canvas 要素をオーバーレイするための CSS */
+        #container {
+            /* コンテナ用の div について */
+            position: relative;
+            /* 座標指定を相対値指定にする */
+        }
+
+        #video {
+            /* カメラ映像を流す video について */
+            transform: scaleX(-1);
+            /* 左右反転させる */
+        }
+
+        #canvas {
+            /* 描画用の canvas について */
+            transform: scaleX(-1);
+            /* 左右反転させる */
+            position: absolute;
+            /* 座標指定を絶対値指定にして */
+            left: 0;
+            /* X座標を0に */
+            top: 0;
+            /* Y座標を0に */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- video の上に canvas をオーバーレイするための div 要素 -->
+        <video id="video" width="400" height="300" autoplay></video> <!-- カメラ映像を流す video -->
+        <canvas id="canvas" width="400" height="300"></canvas> <!-- 重ねて描画する canvas -->
+    </div>
+    <div id="dat"></div> <!-- データ表示用 div 要素 -->
+
+    <!-- clmtrackr 関連ファイルの読み込み -->
+    <script src="./clmtrackr.js"></script> <!-- clmtrackr のメインライブラリの読み込み -->
+    <script src="./model_pca_20_svm.js"></script> <!-- 顔モデル（※）の読み込み -->
+
+    <!-- SkyWay 関連ファイルの読み込み -->
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    
+    <!-- スクリプトメイン処理 -->
+    <script src="./index.js"></script>
+</body>
+
+</html>
