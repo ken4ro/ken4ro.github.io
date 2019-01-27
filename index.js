@@ -33,14 +33,14 @@ peer.on('open', function () {
 
 // 部屋作成ボタンクリック
 $('create-room').submit(function (e) {
-    // e.preventDefault();
+    e.preventDefault();
     var formText = document.getElementById("my-peer-id-text").formText;
     console.log("my peer id form text: ", formText);
 });
 
 // 入室ボタンクリック
 $('enter-room').submit(function (e) {
-    // e.preventDefault();
+    e.preventDefault();
     // 指定した Peer ID と接続
     var formText = document.getElementById("her-peer-id-text").formText;
     console.log("her peer id form text: ", formText);
