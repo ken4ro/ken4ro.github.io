@@ -2,52 +2,58 @@
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>顔認識</title>
-    <style>
-        /* video 要素の上に canvas 要素をオーバーレイするための CSS */
-        #container {
-            /* コンテナ用の div について */
-            position: relative;
-            /* 座標指定を相対値指定にする */
-        }
-
-        #video {
-            /* カメラ映像を流す video について */
-            transform: scaleX(-1);
-            /* 左右反転させる */
-        }
-
-        #canvas {
-            /* 描画用の canvas について */
-            transform: scaleX(-1);
-            /* 左右反転させる */
-            position: absolute;
-            /* 座標指定を絶対値指定にして */
-            left: 0;
-            /* X座標を0に */
-            top: 0;
-            /* Y座標を0に */
-        }
-    </style>
+    <meta charset="UTF-8" name="viewport" content="width=device-width" />
+    <title>Video Chat</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="container">
-        <!-- video の上に canvas をオーバーレイするための div 要素 -->
-        <video id="video" width="400" height="300" autoplay></video> <!-- カメラ映像を流す video -->
-        <canvas id="canvas" width="400" height="300"></canvas> <!-- 重ねて描画する canvas -->
-    </div>
-    <div id="dat"></div> <!-- データ表示用 div 要素 -->
 
+    <div class="video-container">
+        <div class="video1"><video id="my-video" width="400" height="300" muted="true" autoplay></video></div>
+        <div class="video2"><video id="her-video" width="400" height="300" autoplay></video></div>
+    </div>
+
+    <div class="tracking-container">
+        <div class="traking-result"><canvas id="canvas" width="400" height="300"></canvas></div>
+    </div>
+
+    <div class="interface-container">
+        <h2>Infomation</h2>
+        <p> My Peer ID: <span id="my-peer-id">...</span></p>
+        <p> Her Peer ID: <span id="her-peer-id">...</span></p>
+        <p> Now: <span id="now-id">...</span></p>
+        <!-- Create Room -->
+        <p>
+            <form id="create-room">
+                <input type="text" placeholder="Input My Peer ID" id="my-peer-id-text">
+                <button href="#" type="submit">作成</button>
+            </form>
+        </p>
+        <!-- Enter Room -->
+        <p>
+            <form id="enter-room">
+                <input type="text" placeholder="Input Her Peer ID" id="her-peer-id-text">
+                <button href="#" type="submit">入室</button>
+            </form>
+        </p>
+        <!-- Leave Room -->
+        <p>
+            <form id="leave-room">
+                <button href="#" type="submit">退出</button>
+            </form>
+        </p>
+
+    </div>
+
+    <!-- SkyWay 関連ファイルの読み込み -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    
     <!-- clmtrackr 関連ファイルの読み込み -->
     <script src="./clmtrackr.js"></script> <!-- clmtrackr のメインライブラリの読み込み -->
     <script src="./model_pca_20_svm.js"></script> <!-- 顔モデル（※）の読み込み -->
 
-    <!-- SkyWay 関連ファイルの読み込み -->
-    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
-    
     <!-- スクリプトメイン処理 -->
     <script src="./index.js"></script>
 </body>
