@@ -42,7 +42,7 @@ $('#create-room').submit(function (e) {
 $('#enter-room').submit(function (e) {
     e.preventDefault();
     // 指定した Peer ID と接続
-    var formText = document.getElementById("her-peer-id-text").formText;
+    var formText = document.getElementById('her-peer-id-text').value;
     console.log("her peer id form text: ", formText);
     var herPeerId = formText;
     callToTargetPeer(peer, herPeerId);
