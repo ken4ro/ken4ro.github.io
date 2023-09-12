@@ -40,12 +40,15 @@ export const MainPage = () => {
                     </div>
                     <div className={styles.headline} id="demo">
                         <img src={headlineDemoImage} alt="xr concierge" width={1280} height={200} />
-                        <div className={styles.demo_canvas}>
+                        {/* <div className={styles.demo_canvas}>
                             <UnityCanvas />
-                        </div>
-                        {/* <div className={styles.demo_iframe}>
-                            <iframe src="https://dev.xrccg.com:4003?id=bc5b6bbe-538d-4f6b-bedb-449a575ef231-428899cd-8deb-4011-968c-73dea2228b93-34fa0af4-a20f-4a62-bce3-e1e9f025d6fc-57f160b4-2f58-46a5-bd63-ed750673def6" />
                         </div> */}
+                        <div className={styles.demo_iframe}>
+                            <iframe
+                                src="https://prd.xrccg.com:4003?id=3d07fa56-0a92-4b75-a906-f184bf4aba4d-3fc8ce5e-4afc-4fbf-a9ef-c88451d36cf2-5ae907e1-eb19-466d-b405-09cab726e2b0-2241979a-64d0-47aa-8de1-d537cf9865b3"
+                                allow="microphone *"
+                            />
+                        </div>
                         {/* <div><SoraCanvas /></div> */}
                     </div>
                 </div>
