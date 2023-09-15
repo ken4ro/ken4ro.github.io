@@ -344,7 +344,8 @@ public class CharacterMessage : MonoBehaviour
         //var margin = 20;
         var margin = 0;
         var posY = _rectTransform.localPosition.y - _rectTransform.sizeDelta.y / 2 - selectObjectRectTransform.sizeDelta.y / 2 - margin;
-        selectObjectRectTransform.localPosition = new Vector3(491, posY);
+        //selectObjectRectTransform.localPosition = new Vector3(491, posY);
+        selectObjectRectTransform.localPosition = new Vector3(400, posY);
 
         // 選択肢の数に応じて表示位置変更
         _selectWindowBottomPos = /*-640.0f*/ -690.0f + _selectObjectsInPage[_pageIndex.Value].Count * /*120.0f*/ 150.0f;

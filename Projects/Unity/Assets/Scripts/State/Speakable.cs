@@ -36,15 +36,8 @@ public class Speakable : IState
         if (BotManager.Instance.CurrentHierarchy == BotManager.ScenarioHierarchy.Top &&
             GameController.Instance.CurrentIdleTimeSec >= GlobalState.Instance.UserSettings.Bot.RestartSec)
         {
-            if (GameController.Instance.ScreenSaverEnable =="true")
-            {
-                // 再スタート
-                GlobalState.Instance.CurrentState.Value = GlobalState.State.Starting;
-            }
-            else
-            {
-                // プロセス移行無し
-            }
+            // 再スタート
+            GlobalState.Instance.CurrentState.Value = GlobalState.State.Starting;
         }
 
         //トップ画面以外でタイムアウト
