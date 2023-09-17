@@ -252,8 +252,8 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
                     }
                     else if (CurrentLanguage.Value == Language.English)
                     {
-                        // 英語はGoogleデフォルト=48kHz
-                        audioClip = AudioClipMaker.Create("clipname", audioData, 44, AudioClipMaker.BIT_16, (audioDataLength - 44) / 2, 1, 48000, false);
+                        // 英語はGoogleデフォルト=48kHzだとサンプル数が長すぎてエラーが出るので24000kHzに変更
+                        audioClip = AudioClipMaker.Create("clipname", audioData, 44, AudioClipMaker.BIT_16, (audioDataLength - 44) / 2, 1, 24000, false);
                     }
                     break;
             }
