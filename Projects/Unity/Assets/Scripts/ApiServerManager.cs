@@ -7,23 +7,21 @@ using Cysharp.Threading.Tasks;
 
 public class ApiServerManager : SingletonBase<ApiServerManager>
 {
+#if DEVELOPMENT
     private static readonly string RequestUserTokenUrl = "https://dev.xrccg.com:4000/api/v1/user/token/get";
-    //private static readonly string RequestUserTokenUrl = "https://prd.xrccg.com:4000/api/v1/user/token/get";
-
     private static readonly string UpdateUserTokenUrl = "https://dev.xrccg.com:4000/api/v1/user/token/put";
-    //private static readonly string UpdateUserTokenUrl = "https://prd.xrccg.com:4000/api/v1/user/token/put";
-
     private static readonly string RequestUserSettingUrl = "https://dev.xrccg.com:4000/api/v1/user/setting/get";
-    //private static readonly string RequestUserSettingUrl = "https://prd.xrccg.com:4000/api/v1/user/setting/get";
-
     private static readonly string RequestFirstNodeUrl = "https://dev.xrccg.com:4000/api/v1/flow/dialog/get";
-    //private static readonly string RequestFirstNodeUrl = "https://prd.xrccg.com:4000/api/v1/flow/dialog/get";
-
     private static readonly string RequestNextNodeUrl = "https://dev.xrccg.com:4000/api/v1/flow/dialog/put";
-    //private static readonly string RequestNextNodeUrl = "https://prd.xrccg.com:4000/api/v1/flow/dialog/put";
-
     private static readonly string RequestNodeVoiceUrl = "https://dev.xrccg.com:4000/api/v1/flow/voice/get";
-    //private static readonly string RequestNodeVoiceUrl = "https://prd.xrccg.com:4000/api/v1/flow/voice/get";
+#else
+    private static readonly string RequestUserTokenUrl = "https://prd.xrccg.com:4000/api/v1/user/token/get";
+    private static readonly string UpdateUserTokenUrl = "https://prd.xrccg.com:4000/api/v1/user/token/put";
+    private static readonly string RequestUserSettingUrl = "https://prd.xrccg.com:4000/api/v1/user/setting/get";
+    private static readonly string RequestFirstNodeUrl = "https://prd.xrccg.com:4000/api/v1/flow/dialog/get";
+    private static readonly string RequestNextNodeUrl = "https://prd.xrccg.com:4000/api/v1/flow/dialog/put";
+    private static readonly string RequestNodeVoiceUrl = "https://prd.xrccg.com:4000/api/v1/flow/voice/get";
+#endif
 
     /// <summary>
     /// ユーザートークンをリクエスト

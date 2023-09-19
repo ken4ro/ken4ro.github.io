@@ -259,7 +259,10 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
             }
 #if UNITY_EDITOR || !UNITY_WEBGL
             // 音声ファイル保存
-            audioCache.SaveFile(audioData);
+            if (false)
+            {
+                audioCache.SaveFile(audioData);
+            }
 #endif
 
             return audioClip;
