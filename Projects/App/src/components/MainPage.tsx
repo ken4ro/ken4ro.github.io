@@ -40,15 +40,15 @@ export const MainPage = () => {
                     </div>
                     <div className={styles.headline} id="demo">
                         <img src={headlineDemoImage} alt="xr concierge" width={1280} height={200} />
-                        {/* <div className={styles.demo_canvas}>
+                        <div className={styles.demo_canvas}>
                             <UnityCanvas />
-                        </div> */}
-                        <div className={styles.demo_iframe}>
+                        </div>
+                        {/* <div className={styles.demo_iframe}>
                             <iframe
                                 src="https://prd.xrccg.com:4003?id=3191d631-f661-4644-8f25-76b5e02bdfd8-11b993e5-110b-49fb-9b84-d48207086316-5208eaa9-5393-4828-a836-ef991475229f-6f1cee30-5703-4a78-b9ab-a58e30b7d7bf"
                                 allow="microphone *"
                             />
-                        </div>
+                        </div> */}
                         {/* <div><SoraCanvas /></div> */}
                     </div>
                 </div>

@@ -43,6 +43,7 @@ export let unityInstanceRef: React.MutableRefObject<UnityInstance | undefined>;
 export const UnityCanvas = ({ width, height }: Props) => {
     const [startBtnEnabled, setStartBtnEnabled] = useState(false);
     const [stopBtnEnabled, setStopBtnEnabled] = useState(false);
+    const [fullscreenBtnEnabled, setFullscreenBtnEnabled] = useState(false);
     const [userToken, setUserToken] = useState("");
 
     // Canvasの大きさをセット
@@ -99,6 +100,8 @@ export const UnityCanvas = ({ width, height }: Props) => {
         // シナリオ開始ボタン有効化
         const enableScenarioStartBtn = () => {
             setStartBtnEnabled(true);
+            // フルスクリーンボタン有効化（仮）
+            setFullscreenBtnEnabled(true);
         };
         // シナリオ開始ボタン有効化イベント購読
         window.addEventListener("gamecontroller_initialized", enableScenarioStartBtn);
@@ -253,6 +256,12 @@ export const UnityCanvas = ({ width, height }: Props) => {
         setStartBtnEnabled(true);
     };
 
+    // フルスクリーンボタン設定
+    const ClickFullscreenBtn = () => {
+        console.log("フルスクリーン！");
+        containerRef.current?.requestFullscreen();
+    };
+
     // 音声認識中の処理
     useEffect(() => {
         if (transcript !== "") {
@@ -295,6 +304,15 @@ export const UnityCanvas = ({ width, height }: Props) => {
                     sx={{ bgcolor: "#4D8E8A", "&:hover": { bgcolor: "#3A827E" } }}
                 >
                     リセット
+                </Button>
+                <Button
+                    className={styles.button}
+                    variant="contained"
+                    disabled={!fullscreenBtnEnabled}
+                    onClick={ClickFullscreenBtn}
+                    sx={{ bgcolor: "#4D8E8A", "&:hover": { bgcolor: "#3A827E" } }}
+                >
+                    フルスクリーン
                 </Button>
             </div>
         </>
