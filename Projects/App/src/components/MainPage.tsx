@@ -45,8 +45,11 @@ export const MainPage = () => {
                         </div>
                         {/* <div className={styles.demo_iframe}>
                             <iframe
+                                // 商用
                                 src="https://prd.xrccg.com:4003?id=3191d631-f661-4644-8f25-76b5e02bdfd8-11b993e5-110b-49fb-9b84-d48207086316-5208eaa9-5393-4828-a836-ef991475229f-6f1cee30-5703-4a78-b9ab-a58e30b7d7bf"
-                                allow="microphone *"
+                                // 開発用
+                                // src="https://prd.xrccg.com:4003?id=bc5b6bbe-538d-4f6b-bedb-449a575ef231-428899cd-8deb-4011-968c-73dea2228b93-34fa0af4-a20f-4a62-bce3-e1e9f025d6fc-57f160b4-2f58-46a5-bd63-ed750673def6"
+                                // allow="microphone *"
                             />
                         </div> */}
                         {/* <div><SoraCanvas /></div> */}
