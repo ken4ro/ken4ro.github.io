@@ -86,7 +86,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         UIManager.Instance.OnClickScreenSaver += ClickScreenSaver;
 
         // 使用キャラクターセット
-        GlobalState.Instance.CurrentCharacterModel.Value = CharacterModel.Una3D; // TODO: サーバ側から設定取得
+        GlobalState.Instance.CurrentCharacterModel.Value = GlobalState.Instance.UserSettings.Bot.AvatarType == "default2D" ? CharacterModel.Una2D : CharacterModel.Una3D;
         // ストリーミングアセットフォルダからアバター読み込み
         await AssetBundleManager.Instance.LoadAvatarAssetBundleFromStreamingAssets();
         // キャラクターオブジェクト作成
@@ -343,6 +343,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         GlobalState.Instance.UserSettings.Bot.ServiceType = userSettingsObject.bot.service_type;
         GlobalState.Instance.UserSettings.Bot.StartDelaySec = userSettingsObject.bot.start_delay_sec;
         GlobalState.Instance.UserSettings.Bot.VoiceType = userSettingsObject.bot.voice_type;
+        GlobalState.Instance.UserSettings.Bot.AvatarType = userSettingsObject.bot.avatar_type;
         GlobalState.Instance.UserSettings.Rtc = new UserSettingsRtc();
         GlobalState.Instance.UserSettings.Rtc.ServiceType = userSettingsObject.rtc.service_type;
     }

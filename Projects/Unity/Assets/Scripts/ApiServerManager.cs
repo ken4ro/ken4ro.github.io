@@ -342,6 +342,7 @@ public class ApiServerManager : SingletonBase<ApiServerManager>
         public int return_sec;
         public int action_delay_sec;
         public string voice_type;
+        public string avatar_type;
         public string ccg_flow_id;
     }
 

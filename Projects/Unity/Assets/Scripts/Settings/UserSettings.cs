@@ -46,6 +46,7 @@ public class UserSettingsBot
     public int ReturnSec;
     public int ActionDelaySec;
     public string VoiceType;
+    public string AvatarType;
     public string CcgFlowId;
 }
 
