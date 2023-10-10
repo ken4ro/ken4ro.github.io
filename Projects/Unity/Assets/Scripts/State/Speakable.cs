@@ -21,7 +21,8 @@ public class Speakable : IState
 
         // 選択肢表示
         var selectObjects = BotManager.Instance.GetSelectObjects();
-        UIManager.Instance.SetCharacterSelectMessage(selectObjects);
+        var select_type = BotManager.Instance.GetScene();
+        UIManager.Instance.SetCharacterSelectMessage(selectObjects, select_type);
 
         // 音声認識開始
         JSHelper.StartSpeechRecognition();

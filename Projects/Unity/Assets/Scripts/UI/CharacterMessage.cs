@@ -149,7 +149,7 @@ public class CharacterMessage : MonoBehaviour
     {
         // コンテンツレイアウト設定リセット
         GetComponent<VerticalLayoutGroup>().childControlHeight = true;
-        GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        //GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         // テキストリセット
         ResetText();
         // 画像リセット
@@ -282,8 +282,8 @@ public class CharacterMessage : MonoBehaviour
         // RawImage だと Content Size Filter で動的にサイズ変更されないので暫定対処
         var verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         verticalLayoutGroup.childControlHeight = false;
-        var contentSizeFilter = GetComponent<ContentSizeFitter>();
-        contentSizeFilter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+        //var contentSizeFilter = GetComponent<ContentSizeFitter>();
+        //contentSizeFilter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
         var rect = GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, rect.sizeDelta.y + messageMovie.texture.height);
         messageMovie.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(messageMovie.texture.width, messageMovie.texture.height);
@@ -304,18 +304,24 @@ public class CharacterMessage : MonoBehaviour
 
     private void ResetImage()
     {
-        messageImage.color = _disableColor;
-        messageImage.gameObject.SetActive(false);
-        messageImage.sprite = null;
+        if (messageImage != null)
+        {
+            messageImage.color = _disableColor;
+            messageImage.gameObject.SetActive(false);
+            messageImage.sprite = null;
+        }
     }
 
     private void ResetMovie()
     {
-        messageMovie.gameObject.SetActive(false);
-        if (messageMovie.isPlaying)
+        if (messageMovie != null)
         {
-            messageMovie.Stop();
-            messageMovie.url = null;
+            messageMovie.gameObject.SetActive(false);
+            if (messageMovie.isPlaying)
+            {
+                messageMovie.Stop();
+                messageMovie.url = null;
+            }
         }
     }
 
@@ -530,7 +536,10 @@ public class CharacterMessage : MonoBehaviour
     /// パネルイベント有効化
     /// </summary>
     /// <param name="swt"></param>
-    public void EnablePanelEvent(bool swt)=> messageImage.raycastTarget = swt;
+    public void EnablePanelEvent(bool swt)
+    {
+        //messageImage.raycastTarget = swt;
+    }
 
     public void PushPanel()
     {

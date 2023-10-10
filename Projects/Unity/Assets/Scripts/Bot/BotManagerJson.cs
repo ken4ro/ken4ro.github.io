@@ -19,6 +19,8 @@ public partial class BotManager
         [NonSerialized]
         public string Image;
         [NonSerialized]
+        public string Type;
+        [NonSerialized]
         public BotResponseBrowser Browser;
         [NonSerialized]
         public BotResponseSelect[] Selects;
@@ -43,6 +45,8 @@ public partial class BotManager
         private BotResponseText text;
         [SerializeField]
         private string image;
+        [NonSerialized]
+        public string type;
         [SerializeField]
         private BotResponseBrowser browser;
         [SerializeField]
@@ -200,6 +204,8 @@ public partial class BotManager
     public class BotResponseSelect : ISerializationCallbackReceiver
     {
         [NonSerialized]
+        public int Index;
+        [NonSerialized]
         public Color Color;
         [NonSerialized]
         public string Image;
@@ -216,6 +222,8 @@ public partial class BotManager
         [NonSerialized]
         public string Vi;
 
+        [NonSerialized]
+        public int index;
         [SerializeField]
         private string color;
         [SerializeField]

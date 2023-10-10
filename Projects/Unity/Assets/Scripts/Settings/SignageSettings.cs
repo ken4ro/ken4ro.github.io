@@ -20,6 +20,7 @@ public class SignageSettings
         Japanese,
         English,
         Chinese,
+        Korean,
         Russian,
         Arabic,
         Vietnamese

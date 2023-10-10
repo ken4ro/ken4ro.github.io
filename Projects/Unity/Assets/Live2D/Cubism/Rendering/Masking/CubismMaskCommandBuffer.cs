@@ -71,7 +71,7 @@ namespace Live2D.Cubism.Rendering.Masking
             {
                 proxy = new GameObject(proxyName)
                 {
-                     hideFlags = HideFlags.HideAndDontSave
+                     //hideFlags = HideFlags.HideAndDontSave
                 };
 
 
@@ -134,7 +134,10 @@ namespace Live2D.Cubism.Rendering.Masking
             // Enqueue sources.
             for (var i = 0; i < Sources.Count; ++i)
             {
-                Sources[i].AddToCommandBuffer(Buffer);
+                if (Sources[i] != null)
+                {
+                    Sources[i].AddToCommandBuffer(Buffer);
+                }
             }
         }
 

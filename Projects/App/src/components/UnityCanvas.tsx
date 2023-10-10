@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // react
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // react-speech-recognition
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 // mui
@@ -45,7 +45,6 @@ export const UnityCanvas = ({ width, height }: Props) => {
     const [stopBtnEnabled, setStopBtnEnabled] = useState(false);
     const [fullscreenBtnEnabled, setFullscreenBtnEnabled] = useState(false);
     const [userToken, setUserToken] = useState("");
-    const fullscreenContainerRef = useRef<HTMLDivElement>(null);
 
     // Canvasの大きさをセット
     const canvas = window.document.createElement("canvas");
@@ -60,11 +59,8 @@ export const UnityCanvas = ({ width, height }: Props) => {
     });
     unityInstanceRef = instanceRef;
     if (containerRef.current) {
-        // containerRef.current.style.width = width + "px";
-        // containerRef.current.style.height = height + "px";
-        // containerRef.current.style.width = "100%";
-        // containerRef.current.style.height = "100%";
-        // containerRef.current.style.aspectRatio = "16 / 9";
+        containerRef.current.style.width = width + "px";
+        containerRef.current.style.height = height + "px";
     }
 
     // 音声認識初期化
@@ -288,11 +284,9 @@ export const UnityCanvas = ({ width, height }: Props) => {
 
     return (
         <>
-            <div className={styles.fullscreen_container} ref={fullscreenContainerRef}>
-                <div className={styles.canvas} ref={containerRef} />
-            </div>
+            <div className={styles.canvas} ref={containerRef} />
             <div className={styles.button_area}>
-                <Button
+                {/* <Button
                     className={styles.button}
                     variant="contained"
                     disabled={!startBtnEnabled}
@@ -309,7 +303,7 @@ export const UnityCanvas = ({ width, height }: Props) => {
                     sx={{ bgcolor: "#4D8E8A", "&:hover": { bgcolor: "#3A827E" } }}
                 >
                     リセット
-                </Button>
+                </Button> */}
                 <Button
                     className={styles.button}
                     variant="contained"

@@ -47,10 +47,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         base.Awake();
 
-#if DEVELOPMENT
-        Debug.Log($"Environment = Development");
-#else
+#if PRODUCTION
         Debug.Log($"Environment = Production");
+#else
+        Debug.Log($"Environment = Development");
 #endif
 
         // ユーザー設定取得
@@ -101,11 +101,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
         // 指定時間待機
         await UniTask.Delay(GlobalState.Instance.UserSettings.Bot.StartDelaySec * 1000);
 
+
 #if UNITY_EDITOR || !UNITY_WEBGL // ブラウザルールにより自動で開始しない。デバッグ用
         // Bot処理開始
         StartBotProcess();
 #else
         // WebGL確認用
+        UIManager.Instance.EnableBootButton();
 #endif
 
         _isInitialized = true;
@@ -138,10 +140,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
             if (canReturnToTop)
             {
                 JSHelper.EnableResetBtn();
+                UIManager.instance.EnableBackButton();
             }
             else
             {
                 JSHelper.DisableResetBtn();
+                UIManager.instance.DisableBackButton();
             }
         }
     }
@@ -292,11 +296,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
         // anonymous id 取得
         var anonymousId = "";
 #if UNITY_EDITOR || !UNITY_WEBGL
-#if DEVELOPMENT
-        anonymousId = "bc5b6bbe-538d-4f6b-bedb-449a575ef231-428899cd-8deb-4011-968c-73dea2228b93-34fa0af4-a20f-4a62-bce3-e1e9f025d6fc-57f160b4-2f58-46a5-bd63-ed750673def6";
-#else
+#if PRODUCTION
         //anonymousId = "3d07fa56-0a92-4b75-a906-f184bf4aba4d-3fc8ce5e-4afc-4fbf-a9ef-c88451d36cf2-5ae907e1-eb19-466d-b405-09cab726e2b0-2241979a-64d0-47aa-8de1-d537cf9865b3";
         anonymousId = "3191d631-f661-4644-8f25-76b5e02bdfd8-11b993e5-110b-49fb-9b84-d48207086316-5208eaa9-5393-4828-a836-ef991475229f-6f1cee30-5703-4a78-b9ab-a58e30b7d7bf";
+#else
+        anonymousId = "03288f42-f7b8-4e22-983c-ff2fa0fd59c4-c4e076d5-16f7-483d-8c7b-a0ec957c4e4d-a50a4729-feee-4c3f-bd73-d3169c917048-080769f5-ea2c-41e6-84c8-b0aa724a2e0b";
+        //anonymousId = "bc5b6bbe-538d-4f6b-bedb-449a575ef231-428899cd-8deb-4011-968c-73dea2228b93-34fa0af4-a20f-4a62-bce3-e1e9f025d6fc-57f160b4-2f58-46a5-bd63-ed750673def6";
 #endif
 #else
         // URL を取得

@@ -7,10 +7,10 @@ import { UnityCanvas } from "./components/UnityCanvas";
 function App() {
     return (
         <>
-            {/* <UnityCanvas /> */}
-            <Header />
+            <UnityCanvas />
+            {/* <Header />
             <MainPage />
-            <Footer />
+            <Footer /> */}
         </>
     );
 }

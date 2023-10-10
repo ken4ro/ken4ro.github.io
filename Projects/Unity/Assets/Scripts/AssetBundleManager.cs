@@ -78,14 +78,20 @@ public class AssetBundleManager : SingletonBase<AssetBundleManager>
 #else
             switch (GlobalState.Instance.CurrentCharacterModel.Value)
             {
+                case CharacterModel.Maru:
+                    assetBundlePath = Path.Combine(Application.dataPath, "../AssetBundles/StandaloneWindows64/maru");
+                    break;
+                case CharacterModel.Usagi:
+                    assetBundlePath = Path.Combine(Application.dataPath, "../AssetBundles/StandaloneWindows64/うさぎちゃん");
+                    break;
                 case CharacterModel.Una2D:
-                    assetBundlePath = Path.Combine(Application.streamingAssetsPath, "avatar_2d_windows.bundle");
+                    assetBundlePath = Path.Combine(Application.dataPath, "../AssetBundles/StandaloneWindows64/una2d");
                     break;
                 case CharacterModel.Una3D:
-                    assetBundlePath = Path.Combine(Application.streamingAssetsPath, "avatar_3d_windows.bundle");
+                    assetBundlePath = Path.Combine(Application.dataPath, "../AssetBundles/StandaloneWindows64/una");
                     break;
                 default:
-                    assetBundlePath = Path.Combine(Application.streamingAssetsPath, "avatar_2d_windows.bundle");
+                    assetBundlePath = Path.Combine(Application.dataPath, "../AssetBundles/StandaloneWindows64/una2d");
                     break;
             }
 #endif
@@ -99,6 +105,34 @@ public class AssetBundleManager : SingletonBase<AssetBundleManager>
         {
             Debug.LogError($"LoadAvatarAssetBundleFromStreamingAssets failed.");
         }
+    }
+
+    public GameObject CreateAvatarAssetBundle()
+    {
+        if (AvatarAssetBundle != null)
+        {
+            string asset_name;
+            switch (GlobalState.Instance.CurrentCharacterModel.Value)
+            {
+                case CharacterModel.Maru:
+                    asset_name = "Maru";
+                    break;
+                case CharacterModel.Usagi:
+                    asset_name = "Usagi";
+                    break;
+                case CharacterModel.Una2D:
+                    asset_name = "Una2D";
+                    break;
+                case CharacterModel.Una3D:
+                    asset_name = "Una";
+                    break;
+                default:
+                    asset_name = "Una2D";
+                    break;
+            }
+            return AvatarAssetBundle.LoadAsset<GameObject>(asset_name);
+        }
+        return null;
     }
 
     public async UniTask LoadGoogleSettingsAssetBundleFromStreamingAssets()

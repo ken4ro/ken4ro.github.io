@@ -5,11 +5,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class PushableSimpleIcon : MonoBehaviour
 {
+    [SerializeField]
+    private Animator _animator;
+
+    public string StartLabel;
+    public string EndLabel;
+
     private RectTransform _rectTransform = null;
-    private Image _fingerImage = null;
+
+    int _endAnimHash;
+    private Coroutine loopAnim;
 
     /// <summary>
     /// 表示を有効にする
@@ -27,17 +36,18 @@ public class PushableSimpleIcon : MonoBehaviour
     public void Initialize()
     {
         _rectTransform = GetComponent<RectTransform>();
-        _fingerImage = GetComponent<Image>();
+        _endAnimHash = Animator.StringToHash(EndLabel);
     }
 
     public void ResetObject()
     {
+        if (_animator != null)
+        {
+            return;
+        }
         _rectTransform.DOComplete();
-        _fingerImage.DOComplete();
-
         _rectTransform.localScale = new Vector3(1.0f, 1.0f);
-        _fingerImage.rectTransform.localScale = new Vector3(1.0f, 1.0f);
-        _fingerImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        _animator.Play(EndLabel, 0, 1.0f);
     }
 
     /// <summary>
@@ -49,12 +59,10 @@ public class PushableSimpleIcon : MonoBehaviour
 
         ResetObject();
 
-        _fingerImage.DOFade(1.0f, 0.5f);
-
-        Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ =>
+        if (loopAnim == null)
         {
-            StartCoroutine("HandAnime");
-        });
+            loopAnim = UIManager.Instance.StartCoroutine(HandAnime());
+        }
     }
 
     /// <summary>
@@ -62,9 +70,11 @@ public class PushableSimpleIcon : MonoBehaviour
     /// </summary>
     public void FadeOut()
     {
-        StopCoroutine("HandAnime");
-
-        _fingerImage.DOFade(0.0f, 0.3f);
+        if (loopAnim != null)
+        {
+            UIManager.Instance.StopCoroutine(loopAnim);
+        }
+        loopAnim = null;
 
         Observable.Timer(TimeSpan.FromSeconds(0.3f)).Subscribe(_ =>
         {
@@ -72,25 +82,37 @@ public class PushableSimpleIcon : MonoBehaviour
         });
     }
 
+    const float WAIT_TIMER = 10.0f;
     IEnumerator HandAnime()
     {
-        var activeColor = new Color(1, 1, 1, 1);
-        var passiveColor = new Color(1, 1, 1, 0.4f);
-        var maxScale = new Vector3(1.05f, 1.05f, 1.05f);
-        var minScale = new Vector3(0.95f, 0.95f, 0.95f);
-        var waitForScale = new WaitForSeconds(1.9f);
+        float timer = WAIT_TIMER;
         while (true)
         {
-            _rectTransform.DOScale(maxScale, 2);
-            _fingerImage.DOColor(activeColor, 2);
-            yield return waitForScale;
-            _rectTransform.DOComplete();
-            _fingerImage.DOComplete();
-            _rectTransform.DOScale(minScale, 2);
-            _fingerImage.DOColor(passiveColor, 2);
-            yield return waitForScale;
-            _rectTransform.DOComplete();
-            _fingerImage.DOComplete();
+            if (Input.touches.Length > 0)
+            {
+                timer = WAIT_TIMER;
+            }
+            if (Input.GetMouseButton(0))
+            {
+                timer = WAIT_TIMER;
+            }
+
+            timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                _animator.Play(StartLabel, 0, 0.0f);
+                yield return new WaitUntil(() => 
+                {
+                    var currentState = _animator.GetCurrentAnimatorStateInfo(0);
+                    if (currentState.shortNameHash == _endAnimHash)
+                    {
+                        return currentState.normalizedTime > 1.0f;
+                    }
+                    return false;
+                });
+                timer = WAIT_TIMER;
+            }
+            yield return null;
         }
     }
 }

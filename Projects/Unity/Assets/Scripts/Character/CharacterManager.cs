@@ -9,6 +9,7 @@ using Live2D.Cubism.Framework;
 using Live2D.Cubism.Framework.Motion;
 using Cysharp.Threading.Tasks;
 using Live2D.Cubism.Framework.MouthMovement;
+using Live2D.Cubism.Rendering.Masking;
 
 /// <summary>
 /// キャラクター管理クラス(キャラクターオブジェクトにアタッチ)
@@ -202,7 +203,19 @@ public class CharacterManager : SingletonMonoBehaviour<CharacterManager>
 
     void OnDisable()
     {
+        Release();
+    }
+
+    public void Release()
+    {
         _characterModel?.Dispose();
+        _characterModel = null;
+
+        var cubism_mask_controller = gameObject.GetComponent<CubismMaskController>();
+        if (cubism_mask_controller != null)
+        {
+            cubism_mask_controller.MaskTexture.Release();
+        }
     }
 
     private void OnAudioFilterRead(float[] data, int channels)

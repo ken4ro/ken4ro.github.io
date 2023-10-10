@@ -291,6 +291,12 @@ namespace Live2D.Cubism.Rendering.Masking
         // ReSharper disable once UnusedMember.Local
         private void OnEnable()
         {
+#if UNITY_EDITOR
+            if (UnityEditor.EditorApplication.isPlaying == false)
+            {
+                return;
+            }
+#endif
             CubismMaskCommandBuffer.AddSource(this);
         }
 
@@ -300,6 +306,12 @@ namespace Live2D.Cubism.Rendering.Masking
         // ReSharper disable once UnusedMember.Local
         private void OnDestroy()
         {
+            CubismMaskCommandBuffer.RemoveSource(this);
+        }
+
+        public void Release()
+        {
+            Destroy(_renderTexture);
             CubismMaskCommandBuffer.RemoveSource(this);
         }
 

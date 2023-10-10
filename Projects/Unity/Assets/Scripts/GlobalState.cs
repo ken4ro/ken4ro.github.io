@@ -30,7 +30,7 @@ public class GlobalState : SingletonBase<GlobalState>
     /// </summary>
     public enum CharacterModel
     {
-        Maru,
+        Maru = 0,
         Usagi,
         Una3D,
         Una2D,

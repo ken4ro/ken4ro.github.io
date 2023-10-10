@@ -5,12 +5,9 @@ using TMPro;
 
 public class UserMessage : MonoBehaviour
 {
-    /// <summary>
-    /// ユーザーメッセージ表示用ゲームオブジェクト
-    /// </summary>
-    [SerializeField] GameObject userMessage = null;
 
     // ユーザーメッセージに属するコンポーネント
+    [SerializeField]
     private TextMeshProUGUI _userMessageTextPro = null;
 
     /// <summary>
@@ -18,18 +15,17 @@ public class UserMessage : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        _userMessageTextPro = userMessage.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     /// <summary>
     /// 有効にする
     /// </summary>
-    public void Enable() => userMessage.SetActive(true);
+    public void Enable() { }
 
     /// <summary>
     /// 無効にする
     /// </summary>
-    public void Disable() => userMessage.SetActive(false);
+    public void Disable() { }
 
     /// <summary>
     /// ユーザーメッセージのテキストをセット

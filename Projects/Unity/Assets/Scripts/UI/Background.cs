@@ -5,6 +5,7 @@ using DG.Tweening;
 using Coffee.UIExtensions;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEditor;
 
 /// <summary>
 /// 背景画像表示用ゲームオブジェクトにアタッチする
@@ -25,8 +26,8 @@ public class Background : MonoBehaviour
 
     private GameObject _backGround = null;
     private RectTransform _rectTransform = null;
-    private Image _backGroundImage = null;
-    private List<Sprite> _sprites = new List<Sprite>();
+    private RawImage _backGroundImage = null;
+    private List<Texture2D> _sprites = new List<Texture2D>();
 
     /// <summary>
     /// 初期化
@@ -35,7 +36,7 @@ public class Background : MonoBehaviour
     {
         _backGround = this.gameObject;
         _rectTransform = _backGround.GetComponent<RectTransform>();
-        _backGroundImage = GetComponent<Image>();
+        _backGroundImage = GetComponent<RawImage>();
 
 #if false
         // デフォルトの背景画像(顧客によって変わる)用スプライト作成
@@ -52,11 +53,11 @@ public class Background : MonoBehaviour
             return;
         }
 #else
-        var defaultSprite = Resources.Load<Sprite>("Images/background");
+        var defaultSprite = Resources.Load<Texture2D>("Images/background2");
 #endif
 
         // テレイグジスタンスモード中の背景画像(固定)用スプライト作成
-        var telexistenceSprite = Resources.Load<Sprite>("Images/bg_telexistence");
+        var telexistenceSprite = Resources.Load<Texture2D>("Images/bg_telexistence");
         if (telexistenceSprite == null)
         {
             Debug.LogError("Background.Initialize error: Telexistence sprite is null.");
@@ -68,7 +69,7 @@ public class Background : MonoBehaviour
         _sprites.Add(telexistenceSprite);
 
         // 背景画像ロード
-        _backGroundImage.sprite = defaultSprite;
+        _backGroundImage.texture = defaultSprite;
     }
 
     /// <summary>
@@ -97,13 +98,13 @@ public class Background : MonoBehaviour
             case TransitionType.ScaleX:
                 _rectTransform.DOScaleX(0.0f, halfTime);
                 await UniTask.Delay((int)(halfTime + 100));
-                _backGroundImage.sprite = sprite;
+                _backGroundImage.texture = sprite;
                 _rectTransform.DOScaleX(1.0f, halfTime);
                 break;
             case TransitionType.ScaleY:
                 _rectTransform.DOScaleY(0.0f, halfTime / 1000);
                 await UniTask.Delay((int)(halfTime + 100));
-                _backGroundImage.sprite = sprite;
+                _backGroundImage.texture = sprite;
                 _rectTransform.DOScaleY(1.0f, halfTime / 1000);
                 break;
         }

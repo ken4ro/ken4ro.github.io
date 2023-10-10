@@ -45,6 +45,16 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     public Action OnClickScreenSaver = null;
 
     /// <summary>
+    /// シナリオ開始ボタン
+    /// </summary>
+    [SerializeField] ButtonWrapper bootButton = null;
+
+    /// <summary>
+    /// シナリオ開始ボタン
+    /// </summary>
+    [SerializeField] Animator bootButtonAnim = null;
+
+    /// <summary>
     /// UI描画用メインキャンバス(キャラクターより奥)
     /// </summary>
     [SerializeField] GameObject mainCanvas = null;
@@ -62,7 +72,8 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// <summary>
     /// キャラクターメッセージ
     /// </summary>UIManager
-    [SerializeField] CharacterMessage characterMessage = null;
+    //[SerializeField] CharacterMessage characterMessage = null;
+    [SerializeField] ScenarioWindow characterMessage = null;
 
     /// <summary>
     /// ユーザーメッセージ
@@ -127,17 +138,27 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// <summary>
     /// 言語グループ
     /// </summary>
-    [SerializeField] CanvasGroup languageGroup = null;
+    //[SerializeField] CanvasGroup languageGroup = null;
 
     /// <summary>
     /// 言語ウィンドウ
     /// </summary>
-    [SerializeField] LangWindow languageWindow = null;
+    //[SerializeField] LangWindow languageWindow = null;
+    [SerializeField] LanguageSelecter languageWindow = null;
 
     /// <summary>
     /// 録音確認画面
     /// </summary>
     [SerializeField] RecordingCheckPanel recordingCheckPanel = null;
+
+    /// <summary>
+    /// 戻るボタン
+    /// </summary>
+    [SerializeField] Animator _backAnim = null;
+    /// <summary>
+    /// 戻るボタン
+    /// </summary>
+    [SerializeField] ButtonWrapper _backButton = null;
 
     // メインスレッド同期用コンテキスト(いずれ必要になりそう)
     private SynchronizationContext _mainContext = null;
@@ -157,9 +178,9 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         background.Initialize();
         userMessage.Initialize();
         speakingMessage.Initialize();
-        speakableIcon.Initialize();
+        //speakableIcon.Initialize();
         pushableSimpleIcon.Initialize();
-        pushableCocoaIcon.Initialize();
+        //pushableCocoaIcon.Initialize();
         webCameraPanel.Initialize();
         receivedDocumentPanel.Initialize();
         callingPanel.Initialize();
@@ -174,6 +195,19 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         fullScreenPanel.OnClick += ClickFullScreenPanel;
         recordingCheckPanel.OnClickYesBtn += AgreeRecording;
         recordingCheckPanel.OnClickNoBtn += RejectRecording;
+
+        bootButton.Initialise();
+        bootButton.onClick.AddListener(() => { GameController.instance.StartBotProcess(); DisableBootButton(); });
+
+        _backButton.Initialise();
+        _backButton.onClick.AddListener(()=> 
+        {
+            _ = AudioManager.instance.PlaySE(AudioManager.SEType.SelectSentence);
+            ActionManager.Instance.TimerTask?.Dispose();
+            GameController.Instance.CurrentIdleTimeSec = 0.0f;
+            ActionManager.Instance.TimerTask?.Dispose();
+            _ = BotManager.Instance.Reset(); 
+        });
     }
 
     protected override void OnDestroy()
@@ -226,6 +260,9 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         DisableLanguagePanel();
         //フルスクリーンパネル
         DisableFullScreenPanel();
+
+        //戻るボタン
+        DisableBackButton();
     }
 
     /// <summary>
@@ -283,6 +320,23 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     }
 
     /// <summary>
+    /// 起動ボタン表示
+    /// </summary>
+    public void EnableBootButton()
+    {
+        bootButtonAnim.gameObject.SetActive(true);
+        bootButtonAnim.Play("scenario_set_in", 0, 0.0f);
+    }
+
+    /// <summary>
+    /// 起動ボタン非表示
+    /// </summary>
+    public void DisableBootButton()
+    {
+        bootButtonAnim.Play("scenario_set_out", 0, 0.0f);
+    }
+
+    /// <summary>
     /// 発話受付中アイコンフェードイン
     /// </summary>
     public void FadeInSpeakableIcon() => speakableIcon.FadeIn();
@@ -330,7 +384,10 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// <summary>
     /// 発話ウィンドウを非表示にする
     /// </summary>
-    public void DisableUserMessage() => userMessage.Disable();
+    public void DisableUserMessage()
+    {
+        userMessage.Disable();
+    }
 
     /// <summary>
     /// 発話中ウィンドウを表示する
@@ -406,13 +463,8 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// </summary>
     public void EnableLanguagePanel()
     {
-        languageGroup.gameObject.SetActive(true);
-        languageGroup.gameObject.transform.DOLocalMoveX(0.0f, 0.8f).SetEase(Ease.OutBack);
-        languageGroup.DOFade(1.0f, 0.8f);
-        Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ =>
-        {
-            languageGroup.blocksRaycasts = true;
-        });
+        languageWindow.gameObject.SetActive(true);
+        languageWindow.SetDefaultAnim();
     }
 
     /// <summary>
@@ -420,13 +472,27 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// </summary>
     public void DisableLanguagePanel()
     {
-        languageGroup.blocksRaycasts = false;
-        languageGroup.gameObject.transform.DOLocalMoveX(-700.0f, 0.5f).SetEase(Ease.InExpo);
-        languageGroup.DOFade(0.0f, 0.5f);
-        Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ =>
+        languageWindow.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 戻るボタンを表示する
+    /// </summary>
+    public void EnableBackButton()
+    {
+        if (BotManager.Instance.GetScene() != "top")
         {
-            languageGroup.gameObject.SetActive(false);
-        });
+            _backAnim.Play("back_btn_set_in");
+            _backButton.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// 戻るボタンを表示する
+    /// </summary>
+    public void DisableBackButton()
+    {
+        _backAnim.Play("back_btn_set_out");
     }
 
     /// <summary>
@@ -464,7 +530,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// <param name="selectTexts"></param>
     /// <param name="selectImageName"></param>
     /// <returns></returns>
-    public async UniTask SetCharacterMessage(string message, bool isAnim, ImageAccessTypes imageType, string imageFileName, string fullImageFileName)
+    public async UniTask SetCharacterMessage(string message, bool isAnim, ImageAccessTypes imageType, string imageFileName, string fullImageFileName, bool isSelect)
     {
         if (!String.IsNullOrEmpty(fullImageFileName))
         {
@@ -473,7 +539,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         }
         characterMessage.EnablePanelEvent(String.IsNullOrEmpty(fullImageFileName) ? false : true);
 
-        await characterMessage.SetCharacterMessage(message, isAnim, imageType, imageFileName);
+        await characterMessage.SetCharacterMessage(message, isAnim, imageType, imageFileName, isSelect);
     }
 
     /// <summary>
@@ -490,7 +556,10 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     /// </summary>
     /// <param name="selectTexts"></param>
     //public void SetCharacterSelectMessage(List<string> selectTexts) => characterMessage.SetSelectMessage(selectTexts);
-    public void SetCharacterSelectMessage(List<BotResponseSelect> selectObjects) => characterMessage.SetSelectObjects(selectObjects, languageWindow.GetActiveLanguage());
+    public void SetCharacterSelectMessage(List<BotResponseSelect> selectObjects, string type)
+    {
+        characterMessage.SetSelectObjects(selectObjects, type, languageWindow.GetActiveLanguage());
+    }
 
     /// <summary>
     /// キャラクターメッセージをリセット

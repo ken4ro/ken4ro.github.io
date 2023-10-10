@@ -1,13 +1,19 @@
 ManifestFileVersion: 0
-CRC: 1062108487
+CRC: 594953624
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: una2d
-      Dependencies: {}
-    Info_1:
       Name: una
       Dependencies: {}
-    Info_2:
+    Info_1:
       Name: una2d_rugby
+      Dependencies: {}
+    Info_2:
+      Name: una2d
+      Dependencies: {}
+    Info_3:
+      Name: "\u3046\u3055\u304E\u3061\u3083\u3093"
+      Dependencies: {}
+    Info_4:
+      Name: maru
       Dependencies: {}

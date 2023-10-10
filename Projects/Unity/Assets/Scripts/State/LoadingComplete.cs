@@ -19,14 +19,14 @@ public class LoadingComplete : IState
         BotManager.Instance.ExecutionScript(scripts);
 
         // ボットレスポンス取得
-        var voice = BotManager.Instance.GetVoice();
-        var text = BotManager.Instance.GetText();
-        var image = BotManager.Instance.GetImage();
+        string voice = BotManager.Instance.GetVoice();
+        string text = BotManager.Instance.GetText();
+        string image = BotManager.Instance.GetImage();
         var imageType = BotManager.Instance.GetImageAccessType();
-        var motion = BotManager.Instance.GetMotion();
-        var scene = BotManager.Instance.GetScene();
+        string motion = BotManager.Instance.GetMotion();
+        string scene = BotManager.Instance.GetScene();
         var options = BotManager.Instance.GetOptions();
-        var movieFilePath = BotManager.Instance.GetMovie();
+        string movieFilePath = BotManager.Instance.GetMovie();
 
         // 現在のシナリオ階層をセット
         if (Enum.TryParse(scene, true, out BotManager.ScenarioHierarchy hierarchy))
@@ -53,8 +53,9 @@ public class LoadingComplete : IState
         UniTask uiTask = UniTask.CompletedTask;
         if (!string.IsNullOrEmpty(text))
         {
-            var fullSizeImageName = BotManager.GetSelectParameter(options, OptionTypes.fullScreen);
-            uiTask = UIManager.Instance.SetCharacterMessage(text, true, imageType, image, fullSizeImageName);
+            string fullSizeImageName = BotManager.GetSelectParameter(options, OptionTypes.fullScreen);
+            bool isSelect = (BotManager.Instance.GetSelectObjects().Count > 0);
+            uiTask = UIManager.Instance.SetCharacterMessage(text, true, imageType, image, fullSizeImageName, isSelect);
         }
 
         // タスク実行
